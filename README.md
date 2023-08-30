@@ -1,8 +1,7 @@
 # Enum with data to HashMap
 
-[github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
-[crates-io]: https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust
-[docs-rs]: https://img.shields.io/badge/docs.rs-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs
+![github](https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github)
+![crates-io](https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust)
 
 This crate provides a way to transform an enum with associated data into a hashmap. This idea came to me as I was working on my UI library. 
 
@@ -15,8 +14,8 @@ With enum2map, I can define an enum with associated data for each key and the cr
 enum2map = "0.1"
 ```
 
-# Examples
-The way to use the crate is very simple. Define an enum with a bunch data associated to it and derive "DeriveStyleKeys".
+## Examples
+The way to use the crate is very simple. Define an enum with a bunch data associated to it and derive "Enum2Map".
 
 ```rust
 #[derive(Debug, PartialEq, Eq, Clone, Enum2Map)]
@@ -48,5 +47,100 @@ map.get_padding();
 map.get_margin();
 ```
 
-# How it works
+If the value is not set, the macro will generate a default value from ``Default::default()``.
 
+## How it works
+It works by taking every enum value and then using the name to generate the keys and it's getters/setters. For example, this code:
+
+```rust
+#[derive(Debug, PartialEq, Eq, Clone, Enum2Map)]
+pub enum TestValue {
+    Padding(usize),
+    Margin(String),
+}
+```
+
+Will generate:
+
+```rust
+pub enum TestValueKey {
+    Padding,
+    Margin,
+}
+
+pub struct TestValueMap {
+    pub values: std::collections::HashMap<TestValueKey, TestValue>,
+}
+impl TestValueMap {
+    pub fn new() -> Self {
+        Self {
+            values: std::collections::HashMap::new(),
+        }
+    }
+    pub fn insert(&mut self, value: TestValue) {
+        match value {
+            TestValue::Padding(val) => {
+                self.values.insert(TestValueKey::Padding, TestValue::Padding(val));
+            }
+            TestValue::Margin(val) => {
+                self.values.insert(TestValueKey::Margin, TestValue::Margin(val));
+            }
+        }
+    }
+    pub fn get(&self, key: TestValueKey) -> TestValue {
+        match self.values.get(&key) {
+            Some(value) => value.clone(),
+            None => {
+                match key {
+                    TestValueKey::Padding => TestValue::Padding(Default::default()),
+                    TestValueKey::Margin => TestValue::Margin(Default::default()),
+                }
+            }
+        }
+    }
+    pub fn set(&mut self, value: TestValue) {
+        match value {
+            TestValue::Padding(val) => {
+                self.values.insert(TestValueKey::Padding, TestValue::Padding(val));
+            }
+            TestValue::Margin(val) => {
+                self.values.insert(TestValueKey::Margin, TestValue::Margin(val));
+            }
+        }
+    }
+    pub fn get_padding(&self) -> usize {
+        match self.values.get(&TestValueKey::Padding) {
+            Some(TestValue::Padding(value)) => value.clone(),
+            None => Default::default(),
+            _ => {
+                ::core::panicking::panic_fmt(
+                    format_args!("At key the property is not of valid type"),
+                );
+            }
+        }
+    }
+    pub fn get_margin(&self) -> String {
+        match self.values.get(&TestValueKey::Margin) {
+            Some(TestValue::Margin(value)) => value.clone(),
+            None => Default::default(),
+            _ => {
+                ::core::panicking::panic_fmt(
+                    format_args!("At key the property is not of valid type"),
+                );
+            }
+        }
+    }
+    pub fn set_padding(&mut self, val: usize) {
+        self.values.insert(TestValueKey::Padding, TestValue::Padding(val));
+    }
+    pub fn set_margin(&mut self, val: String) {
+        self.values.insert(TestValueKey::Margin, TestValue::Margin(val));
+    }
+}
+```
+
+## Future Work
+
+- [ ] Better error handling.
+- [ ] Handle cases where the enum has no associated data.
+- [ ] Better documentation.
