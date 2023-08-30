@@ -1,8 +1,10 @@
 [package]
-authors = ["Ruben Sanchez"]
 name = "enum2map"
 version = "0.1.0"
+authors = ["Ruben Sanchez <ruben.e.sanchez.a@gmail.com>"]
 edition = "2021"
+description = "A small macro to convert enums with associated data into a HashMap."
+license = "Apache-2.0"
 
 [dependencies]
 syn = "1.0.109"
