@@ -1,9 +1,9 @@
-use enum2map::DeriveStyleKeys;
+use enum2map::Enum2Map;
 
 #[test]
 fn complete_test() {
     // First define your enum that you want to convert into a map
-    #[derive(Debug, PartialEq, Eq, Clone, DeriveStyleKeys)]
+    #[derive(Debug, PartialEq, Eq, Clone, Enum2Map)]
     pub enum TestValue {
         Padding(usize),
         Margin(String),

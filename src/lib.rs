@@ -2,23 +2,15 @@ extern crate proc_macro;
 
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{
-    parse_macro_input, Data, DataEnum, DeriveInput, Fields, Ident, Variant, FieldsUnnamed
-};
+use syn::{parse_macro_input, Data, DataEnum, DeriveInput, Fields, FieldsUnnamed, Ident, Variant};
 
-#[proc_macro_derive(DeriveStyleKeys)]
-pub fn derive_style_keys(input: TokenStream) -> TokenStream {
+#[proc_macro_derive(Enum2Map)]
+pub fn derive_enum2map(input: TokenStream) -> TokenStream {
     let ast: DeriveInput = parse_macro_input!(input as DeriveInput);
 
     let name = &ast.ident;
-    let new_enum_name = Ident::new(
-        &format!("{}Key", name),
-        name.span(),
-    );
-    let new_struct_name = Ident::new(
-        &format!("{}Map", name),
-        name.span(),
-    );
+    let new_enum_name = Ident::new(&format!("{}Key", name), name.span());
+    let new_struct_name = Ident::new(&format!("{}Map", name), name.span());
 
     let data = match ast.data {
         Data::Enum(data) => data,
@@ -125,7 +117,10 @@ fn generate_getter_functions(name: &Ident, data: &DataEnum) -> Vec<proc_macro2::
         .iter()
         .map(|variant| {
             let Variant { ident, fields, .. } = variant;
-            let getter_name = Ident::new(&format!("get_{}", ident.to_string().to_lowercase()), ident.span());
+            let getter_name = Ident::new(
+                &format!("get_{}", ident.to_string().to_lowercase()),
+                ident.span(),
+            );
             let field_type = match fields {
                 Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => &unnamed.first().unwrap().ty,
                 _ => panic!("Expected unnamed fields"),
@@ -150,7 +145,10 @@ fn generate_setter_functions(name: &Ident, data: &DataEnum) -> Vec<proc_macro2::
         .iter()
         .map(|variant| {
             let Variant { ident, fields, .. } = variant;
-            let setter_name = Ident::new(&format!("set_{}", ident.to_string().to_lowercase()), ident.span());
+            let setter_name = Ident::new(
+                &format!("set_{}", ident.to_string().to_lowercase()),
+                ident.span(),
+            );
             let field_type = match fields {
                 Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => &unnamed.first().unwrap().ty,
                 _ => panic!("Expected unnamed fields"),

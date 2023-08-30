@@ -1,8 +1,8 @@
-use enum2map::DeriveStyleKeys;
+use enum2map::Enum2Map;
 
 fn main() {
     // First define your enum that you want to convert into a map
-    #[derive(Debug, PartialEq, Eq, Clone, DeriveStyleKeys)]
+    #[derive(Debug, PartialEq, Eq, Clone, Enum2Map)]
     pub enum TestValue {
         Padding(usize),
         Margin(String),
@@ -18,4 +18,7 @@ fn main() {
 
     map.set_padding(50);
     map.set_margin("another test".to_string());
+
+    map.get_padding();
+    map.get_margin();
 }
