@@ -1,6 +1,6 @@
 [package]
 authors = ["Ruben Sanchez"]
-name = "util_macros"
+name = "enum2map"
 version = "0.1.0"
 edition = "2021"
 

@@ -1,4 +1,5 @@
-use util_macros::DeriveStyleKeys;
+use enum2map::DeriveStyleKeys;
+
 fn main() {
     // First define your enum that you want to convert into a map
     #[derive(Debug, PartialEq, Eq, Clone, DeriveStyleKeys)]

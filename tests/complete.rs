@@ -1,4 +1,4 @@
-use util_macros::DeriveStyleKeys;
+use enum2map::DeriveStyleKeys;
 
 #[test]
 fn complete_test() {
