@@ -1,7 +1,7 @@
 # Enum with data to HashMap
 
-![github](https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github)
-![crates-io](https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust)
+[<img alt="github" src="https://img.shields.io/badge/github-ruben1729/enum2map-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/Ruben1729/enum2map)
+[<img alt="crates.io" src="https://img.shields.io/crates/v/enum2map.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/enum2map)
 
 This crate provides a way to transform an enum with associated data into a hashmap. This idea came to me as I was working on my UI library. 
 
