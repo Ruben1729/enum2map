@@ -1,14 +1,14 @@
 use enum2map::Enum2Map;
 
+// First define your enum that you want to convert into a map
+#[derive(Debug, PartialEq, Eq, Clone, Enum2Map)]
+pub enum TestValue {
+    Padding(usize),
+    Margin(String),
+}
+
 #[test]
 fn complete_test() {
-    // First define your enum that you want to convert into a map
-    #[derive(Debug, PartialEq, Eq, Clone, Enum2Map)]
-    pub enum TestValue {
-        Padding(usize),
-        Margin(String),
-    }
-
     let mut map = TestValueMap::new();
     // Test default values
     assert_eq!(map.get(TestValueKey::Padding), TestValue::Padding(0));
@@ -31,4 +31,14 @@ fn complete_test() {
     map.set_margin("another test".to_string());
     assert_eq!(map.get_padding(), 50);
     assert_eq!(map.get_margin(), "another test".to_string());
+}
+
+#[test]
+#[should_panic(expected = "Unexpected condition: Didn't find type String for Margin")]
+fn panic_test() {
+    let mut map = TestValueMap::new();
+
+    // Should throw a panic if the developer tries inserting the wrong value
+    map.values.insert(TestValueKey::Margin, TestValue::Padding(10));
+    map.get_margin();
 }

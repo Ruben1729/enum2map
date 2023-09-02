@@ -131,7 +131,7 @@ fn generate_getter_functions(name: &Ident, data: &DataEnum) -> Vec<proc_macro2::
                     match self.values.get(&#property_enum_name::#ident) {
                         Some(#name::#ident(value)) => value.clone(),
                         None => Default::default(),
-                        _ => panic!("At key the property is not of valid type")
+                        _ => panic!("Unexpected condition: Didn't find type {} for {}", stringify!(#field_type), stringify!(#ident))
                     }
                 }
             }
