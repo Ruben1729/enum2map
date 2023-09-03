@@ -40,7 +40,7 @@ pub fn derive_enum2map(input: TokenStream) -> TokenStream {
                 }
             }
 
-            pub fn insert(&mut self, value: #name) {
+            pub fn insert(&mut self, value: #name) -> Option<#name>{
                 match value {
                     #(#insert_cases),*
                 }
@@ -59,7 +59,7 @@ pub fn derive_enum2map(input: TokenStream) -> TokenStream {
                 }
             }
 
-            pub fn set(&mut self, value: #name) {
+            pub fn set(&mut self, value: #name) -> Option<#name> {
                 match value {
                     #(#insert_cases),*
                 }
@@ -95,7 +95,7 @@ fn generate_insert_cases(name: &Ident, data: &DataEnum) -> Vec<proc_macro2::Toke
             let Variant { ident, .. } = variant;
             quote! {
                 #name::#ident(val) => {
-                    self.values.insert(#property_enum_name::#ident, #name::#ident(val));
+                    self.values.insert(#property_enum_name::#ident, #name::#ident(val))
                 }
             }
         })

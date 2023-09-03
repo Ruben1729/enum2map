@@ -67,7 +67,6 @@ pub enum TestValueKey {
     Padding,
     Margin,
 }
-
 pub struct TestValueMap {
     pub values: std::collections::HashMap<TestValueKey, TestValue>,
 }
@@ -87,7 +86,10 @@ impl TestValueMap {
             }
         }
     }
-    pub fn get(&self, key: TestValueKey) -> TestValue {
+    pub fn get(&self, key: TestValueKey) -> Option<&TestValue> {
+        self.values.get(&key)
+    }
+    pub fn get_or_default(&self, key: TestValueKey) -> TestValue {
         match self.values.get(&key) {
             Some(value) => value.clone(),
             None => {
@@ -114,7 +116,11 @@ impl TestValueMap {
             None => Default::default(),
             _ => {
                 ::core::panicking::panic_fmt(
-                    format_args!("At key the property is not of valid type"),
+                    format_args!(
+                        "Unexpected condition: Didn\'t find type {0} for {1}",
+                        "usize",
+                        "Padding",
+                    ),
                 );
             }
         }
@@ -125,7 +131,11 @@ impl TestValueMap {
             None => Default::default(),
             _ => {
                 ::core::panicking::panic_fmt(
-                    format_args!("At key the property is not of valid type"),
+                    format_args!(
+                        "Unexpected condition: Didn\'t find type {0} for {1}",
+                        "String",
+                        "Margin",
+                    ),
                 );
             }
         }
@@ -137,10 +147,11 @@ impl TestValueMap {
         self.values.insert(TestValueKey::Margin, TestValue::Margin(val));
     }
 }
+
 ```
 
 ## Future Work
 
-- [ ] Better error handling.
+- [x] Better error handling.
 - [ ] Handle cases where the enum has no associated data.
 - [ ] Better documentation.
