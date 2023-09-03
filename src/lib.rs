@@ -46,7 +46,11 @@ pub fn derive_enum2map(input: TokenStream) -> TokenStream {
                 }
             }
 
-            pub fn get(&self, key: #new_enum_name) -> #name {
+            pub fn get(&self, key: #new_enum_name) -> Option<&#name> {
+                self.values.get(&key)
+            }
+
+            pub fn get_or_default(&self, key: #new_enum_name) -> #name {
                 match self.values.get(&key) {
                     Some(value) => value.clone(),
                     None => match key {
