@@ -159,8 +159,11 @@ fn generate_setter_functions(name: &Ident, data: &DataEnum) -> Vec<proc_macro2::
             };
 
             quote! {
-                pub fn #setter_name(&mut self, val: #field_type) {
-                    self.values.insert(#property_enum_name::#ident, #name::#ident(val));
+                pub fn #setter_name(&mut self, val: #field_type) -> Option<#field_type> {
+                    if let Some(#name::#ident(old_value)) = self.values.insert(#property_enum_name::#ident, #name::#ident(val)) {
+                        return Some(old_value);
+                    }
+                    None
                 }
             }
         })
