@@ -1,5 +1,32 @@
 extern crate proc_macro;
 
+/// Derives a map-like structure for an enum.
+///
+/// The generated code includes:
+///
+/// - A new associated enum type for keys, named as `EnumNameKey`
+/// - A new struct type to act as the map, named as `EnumNameMap`
+/// - Insertion, deletion, getter, and setter methods for each enum variant.
+///
+/// # Requirements
+///
+/// - The macro only works with enums.
+/// - Each enum variant must have exactly one unnamed field.
+///
+/// # Examples
+///
+/// ```
+/// use your_crate::Enum2Map;
+///
+/// #[derive(Enum2Map)]
+/// enum MyEnum {
+///    Variant1(i32),
+///    Variant2(String),
+/// }
+///
+///
+///
+/// ```
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DataEnum, DeriveInput, Fields, FieldsUnnamed, Ident, Variant};
